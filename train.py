@@ -117,9 +117,6 @@ def get_data_iters(batch_size):
     if opt.dataset == "market1501":
         path = "Market-1501-v15.09.15/bounding_box_train"
         train_imgs = ImageFolder(db_path=os.path.join(opt.dataset_root, path), transform=transform_train, instance_num=opt.instance_num)
-    elif opt.dataset == "occluded_reid":
-        path = "Market-1501-v15.09.15/bounding_box_train"
-        train_imgs = ImageFolder(db_path=os.path.join(opt.dataset_root, path), transform=transform_train_domain, instance_num=opt.instance_num)
     elif opt.dataset == "dukemtmc":
         path = "DukeMTMC-reID/bounding_box_train"
         train_imgs = ImageFolder(db_path=os.path.join(opt.dataset_root, path), transform=transform_train, instance_num=opt.instance_num)
@@ -144,12 +141,6 @@ def get_data_iters(batch_size):
     elif opt.dataset == "cub200":
         path = "CUB_200_2011"
         train_imgs = ImageFolderCub200(db_path=os.path.join(opt.dataset_root, path), transform=transform_dml, instance_num=opt.instance_num)
-    elif opt.dataset == "sop":
-        path = "Stanford_Online_Products"
-        train_imgs = ImageFolderSOP(db_path=os.path.join(opt.dataset_root, path), transform=transform_dml, instance_num=opt.instance_num)
-    elif opt.dataset == "deepfashion":
-        path = "In-shop"
-        train_imgs = ImageFolderDeepFashioin(db_path=os.path.join(opt.dataset_root, path), transform=transform_dml, instance_num=opt.instance_num)
     elif opt.dataset == "university1652":
         path = "University-Release"
         train_imgs = ImageFolderUniversity(db_path=os.path.join(opt.dataset_root, path), transform=[transform_satellite, transform_drone], instance_num=opt.instance_num)
@@ -302,7 +293,7 @@ if __name__ == '__main__':
     torch.backends.cuda.matmul.allow_tf32 = True
     torch.backends.cudnn.allow_tf32 = True
 
-    if opt.dataset == "market1501" or opt.dataset == "occluded_reid":
+    if opt.dataset == "market1501":
         num_classes = 751
     elif opt.dataset == "dukemtmc":
         num_classes = 702
@@ -326,10 +317,6 @@ if __name__ == '__main__':
         num_classes = 702
     elif opt.dataset == "p_dukemtmc":
         num_classes = 665
-    elif opt.dataset == "sop":
-        num_classes = 11318
-    elif opt.dataset == "deepfashion":
-        num_classes = 3997
 
     custom_ops = {}
     net = SCM(num_classes=num_classes, num_parts=[1,opt.num_part], feat_num=opt.feat_num, reduce_num=opt.reduce_num, std=opt.std, net=opt.net, erasing=opt.erasing, h=opt.img_height//16, w=opt.img_width//16, mask_part=opt.mask_part, kernel_size=opt.kernel_size)
